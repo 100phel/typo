@@ -80,6 +80,24 @@ class Article < Content
     Article.exists?({:parent_id => self.id})
   end
 
+  def merge_with(other_article_id)
+    other_article = Article.find_by_id(other_article_id)
+    if other_article && other_article.id != self.id
+      Article.create(:allow_comments => true, 
+      :allow_pings => true, 
+      :author => other_article.author, 
+      :body => self.body + other_article.body,
+      :post_type => "read", 
+      :published => true, 
+      :published_at => Time.now,
+      :state => "published", 
+      :text_filter_id => 5, 
+      :title => other_article.title, 
+      :type => "Article"
+      )
+    end
+  end
+
   attr_accessor :draft, :keywords
 
   has_state(:state,

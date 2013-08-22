@@ -38,7 +38,11 @@ class Admin::ContentController < Admin::BaseController
   end
 
   def merge
-    redirect_to :action => 'index'
+    article = Article.find_by_id(params[:article_id])
+    if article then
+      article.merge_with(params[:merge_with])
+    end
+    redirect_to :action => 'index'    
   end
 
   def destroy

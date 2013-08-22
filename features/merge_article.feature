@@ -9,7 +9,7 @@ Feature: Merge 2 articles
 
   Scenario: Successfully merge articles
     Given I am on the edit article "1" page
-    When I fill in "merge_with" with "2"
+    When I fill in "merge_with" with "3"
     And I press "Merge"
     Then I should be on the admin content page
-    And I should see "Hello World - 2"
+    And I should see "Hello World"
