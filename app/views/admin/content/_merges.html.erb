@@ -1,0 +1,9 @@
+ <div class=''>
+    <h4><%= _("Merge Articles") %></h4>
+      <%= label_tag('article_id', 'Article ID', { :style => "text-align:left;width:auto;margin-right:15px;"}) %>
+      <%= text_field 'merge', 'with1', :name => 'merge_with', :autocomplete => 'off', :style => 'width: 20%' %>
+      <%= hidden_field 'article', 'id', :name => 'article_id', :value => @article.id %>
+      <%= button_to "Merge", :action => "merge" %>
+      
+
+  </div>
