@@ -83,18 +83,39 @@ class Article < Content
   def merge_with(other_article_id)
     other_article = Article.find_by_id(other_article_id)
     if other_article && other_article.id != self.id
-      Article.create(:allow_comments => true, 
+
+      author = other_article.author ? other_article.author : 'Unknown Author'
+      body = self.body ? self.body : '' + other_article.body ? other_article.body : ''
+      title = other_article.title ? other_article.title : 'Unknown Title'
+
+      new_article = Article.create(:allow_comments => true, 
       :allow_pings => true, 
-      :author => other_article.author, 
-      :body => self.body + other_article.body,
+      :author => author, 
+      :body => body,
       :post_type => "read", 
       :published => true, 
       :published_at => Time.now,
       :state => "published", 
       :text_filter_id => 5, 
-      :title => other_article.title, 
-      :type => "Article"
+      :title => title, 
+      :type => "Article",
+      :user_id => 1,
       )
+      if self.comments then 
+        self.comments.each do |com|
+          new_article.add_comment(:author => com[:author], :body => com[:body])
+          new_article.save!
+        end
+      end
+      if other_article.comments then 
+        other_article.comments.each do |com| 
+          new_article.add_comment(:author => com[:author], :body => com[:body])
+          new_article.save!
+        end
+      end
+
+      other_article.destroy
+      self.destroy
     end
   end
 
