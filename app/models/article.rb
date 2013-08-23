@@ -85,7 +85,7 @@ class Article < Content
     if other_article && other_article.id != self.id
 
       author = other_article.author ? other_article.author : 'Unknown Author'
-      body = self.body ? self.body : '' + other_article.body ? other_article.body : ''
+      body = (self.body ? self.body : '') + (other_article.body ? other_article.body : '')
       title = other_article.title ? other_article.title : 'Unknown Title'
 
       new_article = Article.create(:allow_comments => true, 
